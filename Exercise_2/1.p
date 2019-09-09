@@ -6,7 +6,7 @@ fof(c1, axiom, (
 
 fof(c2, axiom, (
   ! [X]: (
-    livesDread(X) => (
+    livesDread(X) <=> (
       (agatha = X) | (charles = X) | (butler = X)
     )
   )
