@@ -1,0 +1,78 @@
+\documentclass[a4paper,twoside,12pt]{article}
+\usepackage{amsfonts,amstext}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{german}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage{enumerate}
+\usepackage{enumitem}
+
+\newcommand{\ZETTELNUMMER}{3}
+
+\newcounter{AUFGNR}
+\setcounter{AUFGNR}{6}
+\newcommand{\AUFGABE}[1]{\vspace{0.3cm}\item[Exercise~{\arabic{AUFGNR}}:]\stepcounter{AUFGNR} #1\\}
+
+\begin{document}
+\pagestyle{plain}
+\noindent Abdullah Barhoum, Linus Helfmann, Arne Rolf, Linus Ververs
+
+\hrule\medskip
+\rule{0ex}{0ex}\\[-1ex]
+Lösungen zur Exercise \ZETTELNUMMER
+
+\smallskip
+\noindent
+\large
+\textbf{Künstliche Intelligenz}
+\medskip\hrule
+
+\smallskip
+\noindent
+\begin{enumerate}[leftmargin=2.5cm]
+	\AUFGABE{Truth Tables}
+	%p,q,r,qvr,qp,rp,a+b+c,a+b+c->-q
+	\\[-2ex]
+	\hspace*{-2.5cm}
+	\begin{tabular}{|c|c|c|c|c|c|c|c|}
+		\hline 
+		p & q & r & $q \vee p$ & $q \Rightarrow \neg p$ & $\neg(r \wedge p)$  & $\{...\}$ & $\{...\} \Rightarrow \neg p$  \\ 
+		\hline 
+		0 & 0 & 0 & 0 & 1 & 1 & 0 & 1 \\ 
+		\hline 
+		0 & 0 & 1 & 0 & 1 & 1 & 0 & 1 \\ 
+		\hline 
+		0 & 1 & 0 & 1 & 1 & 1 & 1 & 1 \\ 
+		\hline 
+		0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\ 
+		\hline 
+		1 & 0 & 0 & 1 & 1 & 1 & 1 & 0 \\ 
+		\hline 
+		1 & 0 & 1 & 1 & 1 & 0 & 0 & 1 \\ 
+		\hline 
+		1 & 1 & 0 & 1 & 0 & 1 & 0 & 1 \\ 
+		\hline 
+		1 & 1 & 1 & 1 & 0 & 0 & 0 & 1 \\ 
+		\hline 
+	\end{tabular} 
+	%	Use a truth table to prove that ¬p is a logical consequence of the set {q ∨ r, q ⇒ ¬p, ¬(r ∧ p)}.
+	\AUFGABE{SLD}
+%	Give SLD-resolution refutations for the following sets of clauses:
+%	• {P1}, {P2}, {P3}, {P4}, {¬P1, ¬P2, P6}, {¬P3, ¬P4, P7}, {¬P6, ¬P7, P8}, {¬P8}
+%	• {¬P2, P3}, {¬P3, P4}, {¬P4, P5}, {P3}, {P1}, {P2}, {¬P1}, {¬P3, P6}, {¬P3, P7},	{¬P3, P8}
+	\AUFGABE{DPLL I}
+	%	Are the following formulas satisfiable? Use the DPLL procedure:
+	%(a) (¬a ∨ b) ∧ (¬c ∨ d) ∧ (¬e ∨ ¬f) ∧ (f ∨ ¬e ∨ ¬b)
+%	(b) (p ∨ q ∨ r ∨ s) ∧ (¬p ∨ q ∨ ¬r) ∧ (¬q ∨ ¬r ∨ s) ∧ (p ∨ ¬q ∨ r ∨ s) ∧ (q ∨ ¬r ∨ ¬s) ∧	(¬p ∨ ¬r ∨ s) ∧ (¬p ∨ ¬s) ∧ (p ∨ ¬q)
+	\AUFGABE{DPLL II}
+	% Can you present a formula that well illustrates the worst case
+	\AUFGABE{Pythagoreans Triple Problem}
+	% Find out and explain how the pythagoreans triple problem was represented in SAT by Heule and colleagues.
+\end{enumerate}
+
+\end{document}
