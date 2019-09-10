@@ -7,7 +7,9 @@ def solveForVar(clauses, var):
     if var in c:
       # mark resolved clauses for deletion
       shouldDelete[i] = True
-    elif -var in c:
+
+    # er hat ein böses bsp [17,17,40], einmal remove entfernt nur das eine 17
+    while -var in c:
       # remove unresolvable literals
       c.remove(-var)
 
@@ -50,18 +52,25 @@ def solve(clauses, solutions):
       continue
 
     # Pure Literal
+    # anzahl treffer
     found = {}
+    # vorzeichen -1 => -, 1 = +, 0 => beides => nicht gültig
+    sign = {}
     for c in clauses:
       for v in c:
         key = abs(v)
         isPositive = v > 0
         if key in found:
-          if found[key] != isPositive:
-            del found[key]
+          found[key] += 1
+          if key in sign and sign[key] != -1 + isPositive * 2:
+            # anderes vorzeichen als bereits gesehen -> nicht pure literal
+            del sign[key]
         else:
-          found[key] = isPositive
-    for num, isPositive in found.items():
-      val = int(num) * (1 if isPositive else -1)
+          found[key] = 1
+          sign[key] = -1 + isPositive * 2
+
+    for num, isPositive in sign.items():
+      val = int(num) * isPositive
       print("found pure Literal", val)
       solutions.append(val)
       solveForVar(clauses, val)
