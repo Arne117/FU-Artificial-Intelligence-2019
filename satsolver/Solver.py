@@ -2,25 +2,16 @@ from copy import deepcopy
 
 # optimization: only one loop if possible
 def solveForVar(clauses, var):
-  shouldDelete = [False] * len(clauses)
-  for i, c in enumerate(clauses):
+  for c in clauses[:]:
     if var in c:
       # mark resolved clauses for deletion
-      shouldDelete[i] = True
+      clauses.remove(c)
+      continue
 
     # er hat ein böses bsp [17,17,40], einmal remove entfernt nur das eine 17
-    while -var in c:
+    while (-var in c):
       # remove unresolvable literals
       c.remove(-var)
-
-  # reverse, because we delete from the end so that the indexes stay valid
-  shouldDelete.reverse()
-  cLen = len(clauses) - 1
-  for i, should in enumerate(shouldDelete):
-    # remove resolved clauses
-    if should:
-      clauses.remove(clauses[cLen - i])
-
 
 def solve(clauses, solutions):
   while True:
