@@ -33,7 +33,7 @@ def solve(clauses, solutions):
     # fail / backtrack
     for c in clauses:
       if len(c) == 0:
-        print("invalid branch")
+        print(solutions, "invalid branch")
         return False, None
         # return...
 
@@ -43,7 +43,7 @@ def solve(clauses, solutions):
       if len(c) == 1:
         goToNext = True
         val = c[0]
-        print("Unit propagation", val)
+        print(solutions,"Unit propagation", val)
         solutions.append(val)
         solveForVar(clauses, val)
         break
@@ -71,7 +71,7 @@ def solve(clauses, solutions):
 
     for num, isPositive in sign.items():
       val = int(num) * isPositive
-      print("found pure Literal", val)
+      print(solutions, "found pure Literal", val)
       solutions.append(val)
       solveForVar(clauses, val)
       goToNext = True
@@ -88,19 +88,22 @@ def solve(clauses, solutions):
           continue
         tested[key] = 1
         copyOne = deepcopy(clauses)
-        print("split", v)
+        print(solutions,"split", v)
         solveForVar(copyOne, v)
-        isSolved, subSolutions = solve(copyOne, [])
+        isSolved, subSolutions = solve(copyOne, solutions+[v])
         if isSolved:
           solutions.append(v)
-          return True, solutions + subSolutions
+          return True, subSolutions
         
         v = -v
         copyTwo = deepcopy(clauses)
-        print("split", v)
+        print(solutions,"split", v)
         solveForVar(copyTwo, v)
-        isSolved, subSolutions = solve(copyTwo, [])
+        isSolved, subSolutions = solve(copyTwo, solutions+[v])
         if isSolved:
           solutions.append(v)
-          return True, solutions + subSolutions
-        
+          return True, subSolutions
+
+    # alles probiert, nichts geht => fail
+    print(solutions, "no split worked => invalid branch")
+    return False, None
