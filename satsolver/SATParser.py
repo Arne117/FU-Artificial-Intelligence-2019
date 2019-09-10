@@ -9,7 +9,7 @@ def parse(pathToFile, sort=True, log=True):
 
   i = 0
   for line in minisatFile:
-    if line[0] == "c": continue
+    if len(line) == 0 or line[0] in ["c","%","0"]: continue
 
     if line[0] == "p":
       lineContent = line.split()
