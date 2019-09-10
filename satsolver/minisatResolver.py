@@ -3,10 +3,11 @@
 import sys
 import os
 from SATParser import parse
-from Solver import solveForVar
+from Solver import solve
 
 
 clauses, numVariables, numClauses = parse(sys.argv[1])
 
-solutions = []
+isSolved, solutions = solve(clauses, [])
 
+print("is solved", isSolved, "solutions", solutions)
