@@ -1,3 +1,5 @@
+from functools import reduce
+
 def parse(pathToFile, sort=True, log=True):
   minisatFile = open(pathToFile, "r").read().split('\n')
   numVariables = 0
@@ -22,7 +24,7 @@ def parse(pathToFile, sort=True, log=True):
       clauses[i].sort()
     i += 1
 
-  assert numVariables > 0 and numClauses > 0 and len(clauses) == numClauses
+  assert numVariables > 0 and numClauses > 0 and reduce(lambda a, b: (a) + len(b), clauses, 0) > 0
 
   if log:
     print("--- Header ---")
