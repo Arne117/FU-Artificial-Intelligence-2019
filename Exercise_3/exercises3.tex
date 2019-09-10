@@ -16,7 +16,8 @@
 
 \newcounter{AUFGNR}
 \setcounter{AUFGNR}{6}
-\newcommand{\AUFGABE}[1]{\vspace{0.3cm}\item[Exercise~{\arabic{AUFGNR}}:]\stepcounter{AUFGNR} #1\\}
+\newcommand{\AUFGABE}[1]{\vspace{0.3cm}\item[Exercise~{\arabic{AUFGNR}}:]\stepcounter{AUFGNR} #1\\[1ex]}
+\setlength{\itemindent}{-2cm}
 
 \begin{document}
 \pagestyle{plain}
@@ -34,11 +35,10 @@ Lösungen zur Exercise \ZETTELNUMMER
 
 \smallskip
 \noindent
-\begin{enumerate}[leftmargin=2.5cm]
+%[align=parleft, labelsep=0.5cm, wide=-0.5cm]
+\begin{enumerate}[wide=-0.2cm]
 	\AUFGABE{Truth Tables}
-	%p,q,r,qvr,qp,rp,a+b+c,a+b+c->-q
-	\\[-2ex]
-	\hspace*{-2.5cm}
+	Use a truth table to prove that $\neg p$ is a logical consequence of the set ${q \vee r, q \Rightarrow \neg p, \neg (r \wedge p)}$.\\
 	\begin{tabular}{|c|c|c|c|c|c|c|c|}
 		\hline 
 		p & q & r & $q \vee p$ & $q \Rightarrow \neg p$ & $\neg(r \wedge p)$  & $\{...\}$ & $\{...\} \Rightarrow \neg p$  \\ 
@@ -60,19 +60,55 @@ Lösungen zur Exercise \ZETTELNUMMER
 		1 & 1 & 1 & 1 & 0 & 0 & 0 & 1 \\ 
 		\hline 
 	\end{tabular} 
-	%	Use a truth table to prove that ¬p is a logical consequence of the set {q ∨ r, q ⇒ ¬p, ¬(r ∧ p)}.
 	\AUFGABE{SLD}
-%	Give SLD-resolution refutations for the following sets of clauses:
-%	• {P1}, {P2}, {P3}, {P4}, {¬P1, ¬P2, P6}, {¬P3, ¬P4, P7}, {¬P6, ¬P7, P8}, {¬P8}
-%	• {¬P2, P3}, {¬P3, P4}, {¬P4, P5}, {P3}, {P1}, {P2}, {¬P1}, {¬P3, P6}, {¬P3, P7},	{¬P3, P8}
+	Give SLD-resolution refutations for the following sets of clauses:\\
+	a) $\{P1\}, \{P2\}, \{P3\}, \{P4\}, \{\neg P1, \neg P2, P6\}, \{\neg P3, \neg P4, P7\}, \\
+	~~~~~ \{\neg P6, \neg P7, P8\}, \{\neg P8\}$
+	\begin{align*}
+		\underline{\{\neg P8\}, \{\neg P6, \neg P7, P8\}} \hspace{11.65cm}\\
+		\underline{\{\neg P6, \neg P7\}, \{\neg P1, \neg P2, P6\}} \hspace{7.9cm} \\
+		\underline{\{\neg P1,\neg P2, \neg P7\}, \{P2\}} \hspace{6.5cm} \\
+		\underline{\{\neg P1, \neg P7\},\{P1\}} \hspace{5.1cm}\\
+		\underline{\{\neg P7\}, \{\neg P3, \neg P4, P7\}} \hspace{1.35cm} \\
+	 	\underline{\{\neg P3, \neg P4\}, \{P3\}} \\
+	 	\underline{\{\neg P4\}, \{P4\}} \\
+	 \{\}
+	\end{align*}
+	b) $\{\neg P2, P3\}, \{\neg P3, P4\}, \{\neg P4, P5\}, \{P3\}, \{P1\}, \{P2\}, \{\neg P1\},\\
+	~~~~~ \{\neg P3, P6\}, \{\neg P3, P7\},	\{\neg P3, P8\}$
+	\begin{align*}
+		\underline{\{\neg P1\}, \{P1\}} \\
+		\{\}
+	\end{align*}
 	\AUFGABE{DPLL I}
-	%	Are the following formulas satisfiable? Use the DPLL procedure:
-	%(a) (¬a ∨ b) ∧ (¬c ∨ d) ∧ (¬e ∨ ¬f) ∧ (f ∨ ¬e ∨ ¬b)
-%	(b) (p ∨ q ∨ r ∨ s) ∧ (¬p ∨ q ∨ ¬r) ∧ (¬q ∨ ¬r ∨ s) ∧ (p ∨ ¬q ∨ r ∨ s) ∧ (q ∨ ¬r ∨ ¬s) ∧	(¬p ∨ ¬r ∨ s) ∧ (¬p ∨ ¬s) ∧ (p ∨ ¬q)
+	Are the following formulas satisfiable? Use the DPLL procedure:\\
+	a) $(\neg  a \vee b) \wedge (\neg c \vee d) \wedge (\neg e \vee \neg f) \wedge (f \vee \neg e \vee \neg b)$\\
+	\begin{align*} 
+		[&]& (\neg  a \vee b) \wedge (\neg c \vee d) \wedge (\neg e \vee \neg f) \wedge (f \vee \neg e \vee \neg b)  &&|&~\text{Pure-Literal } \neg a\\
+		[&\neg a]& (\neg c \vee d) \wedge (\neg e \vee \neg f) \wedge (f \vee \neg e \vee \neg b) &&|&~\text{Pure-Literal } \neg c\\
+		[&\neg a, \neg c]& (\neg e \vee \neg f) \wedge (f \vee \neg e \vee \neg b) &&|&~\text{Split } \neg e\\
+		[&\neg a, \neg c, \neg c]& \emptyset &&&\\
+	\end{align*}
+
+	b) $(p \vee q \vee r \vee s) \wedge (\neg p \vee q \vee \neg r) \wedge (\neg q \vee \neg r \vee s) \wedge (p \vee \neg q \vee r \vee s) \wedge (q \vee \neg r \vee \neg s) \wedge	(\neg p \vee \neg r \vee s) \wedge (\neg p \vee \neg s) \wedge (p \vee \neg q)$ Split $s$
+	\begin{align*} 
+	[&s]& (\neg p \vee q \vee \neg r) \wedge (q \vee \neg r )  \wedge (\neg p) \wedge (p \vee \neg q) &&|& \text{Unitprop } \neg p\\
+	[&s, \neg p]& (q \vee \neg r ) \wedge (\neg q) &&|& \text{Unitprop } \neg q\\
+	[&s, \neg p, \neg q]& ( \neg r ) &&|& \text{Unitprop } \neg r\\
+	[&s, \neg p, \neg q, \neg r]& \emptyset\\
+	\end{align*}
+	
 	\AUFGABE{DPLL II}
-	% Can you present a formula that well illustrates the worst case
+	Can you present a formula that well illustrates the worst case.\\
+	\\
+	Der Worst Case, ist wenn man nie PureLiteral/Unit-Propagation anwenden kann, sondern nur Split mit Backtrack.\\
+	Für n Variablen, erstelle alle Teilformeln der Länge n wo alle Variablen vorkommen mit allen kombinationen von und/oder. Dadurch gibt es k.....
 	\AUFGABE{Pythagoreans Triple Problem}
-	% Find out and explain how the pythagoreans triple problem was represented in SAT by Heule and colleagues.
+	Find out and explain how the pythagoreans triple problem was represented in SAT by Heule and colleagues.\\
+	\\
+	\(F_n\) repräsentiert das Problem die Zahlen \(1...n\) so mit 2 Farben einzufärben, dass es kein einfarbiges Pythagoreisches Tripel gibt. Um dieses Problem in SAT abzubilden, werden die Variablen \(x_i \in  \{1...n\}\), die durch ihre Belegung (True/False) repräsentieren, wie die entsprechende Zahl \(i\) eingefärbt wird. Heißt: True entspricht Farbe 1 und False Farbe 2.  Für jedes Pthagoreisches Tripel \((a,b,c)\) mit \(a^2 + b^2  = c^2\) ergeben sich folgende Klauseln: 
+	\[(x_a \vee x_b \vee x_c) \wedge (\neg  x_a \vee \neg x_b \vee \neg x_c)\] All diese Klauseln zusammen ergeben das zu \(F_n\) äquivalente SAT-Problem.
+	
 \end{enumerate}
 
 \end{document}
