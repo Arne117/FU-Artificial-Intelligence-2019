@@ -101,8 +101,9 @@ Lösungen zur Exercise \ZETTELNUMMER
 	\AUFGABE{DPLL II}
 	Can you present a formula that well illustrates the worst case.\\
 	\\
-	Der Worst Case, ist wenn man nie PureLiteral/Unit-Propagation anwenden kann, sondern nur Split mit Backtrack.\\
-	Für n Variablen, erstelle alle Teilformeln der Länge n wo alle Variablen vorkommen mit allen kombinationen von und/oder. Dadurch gibt es k.....
+	Der aufwändigste Fall, ist wenn man nie Pure-Literal/Unit-Propagation anwenden kann, sondern nur Split mit Backtrack und keine Lösung funktioniert, sodass man alle ausprobieren muss.\\
+	Für n Variablen, erstelle man also alle Teilformeln der Länge n wo alle Variablen vorkommen mit allen kombinationen von direkt/negiert. Dadurch erhält man $2^n$ teilformeln und die Formel ist nicht erfüllbar.\\
+	Wenn man eine beliebige Formel entfernt, dann ist die Gesamtformel erfüllbar mit der negation der entfernten Formel als Belegung.
 	\AUFGABE{Pythagoreans Triple Problem}
 	Find out and explain how the pythagoreans triple problem was represented in SAT by Heule and colleagues.\\
 	\\
