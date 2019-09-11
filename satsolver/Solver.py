@@ -23,6 +23,8 @@ def isAlreadyKnownAsFalse(solutions):
   return False
 
 def addFalseSolution(solutions):
+  # erstmal wieder deaktiviert
+  return
   solset = set(solutions)
   combined = False
   for v in solutions:
