@@ -131,6 +131,14 @@ def solve(clauses, solutions):
           solutions.append(v)
           return True, subSolutions
 
+        # falls wir v und -v getestet haben, dann müssen wir keine weiteren v's prüfen
+        # da diese auch irgentwann v oder -v setzen oder wenn sie ohne v/-v auskommen,
+        # müssten sie auch mit v/-v funktionieren
+        # => ein durchgang reicht!
+        print(solutions, "split v/-v didn't work => invalid branch")
+        addFalseSolution(solutions)
+        return False, None
+
     # alles probiert, nichts geht => fail
     print(solutions, "no split worked => invalid branch")
     addFalseSolution(solutions)
