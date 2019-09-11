@@ -1,5 +1,7 @@
 from copy import deepcopy
 
+false_solutions = []
+
 # optimization: only one loop if possible
 def solveForVar(clauses, var):
   for c in clauses[:]:
@@ -13,7 +15,40 @@ def solveForVar(clauses, var):
       # remove unresolvable literals
       c.remove(-var)
 
+def isAlreadyKnownAsFalse(solutions):
+  for not_solution in false_solutions:
+    if not_solution.issubset(set(solutions)):
+      # auf dieser basis kann es keine lösung geben
+      return True
+  return False
+
+def addFalseSolution(solutions):
+  solset = set(solutions)
+  combined = False
+  for v in solutions:
+    solset.remove(v)
+    solset.add(-v)
+    if solset in false_solutions:
+      # falls ein mit uns kombinierbare lösung exisitert
+      # diese löschen
+      false_solutions.remove(solset)
+      # und die kombinierte hinzufügen
+      solset.remove(-v)
+      addFalseSolution(solset)
+      combined=True
+    else:
+      # ursprüngliches set wiederherstellen
+      solset.remove(-v)
+    # ursprüngliches set wiederherstellen 
+    solset.add(v)
+  if (not combined) and (not (solset in false_solutions)):
+    false_solutions.append(solset)
+
 def solve(clauses, solutions):
+  if isAlreadyKnownAsFalse(solutions):
+    print(solutions, "tested as false before => fail & backtrack", len(false_solutions))
+    return False, None
+
   while True:
     # print("iteration", clauses)
     # done
@@ -25,6 +60,7 @@ def solve(clauses, solutions):
     for c in clauses:
       if len(c) == 0:
         print(solutions, "invalid branch")
+        addFalseSolution(solutions)
         return False, None
         # return...
 
@@ -97,4 +133,5 @@ def solve(clauses, solutions):
 
     # alles probiert, nichts geht => fail
     print(solutions, "no split worked => invalid branch")
+    addFalseSolution(solutions)
     return False, None
