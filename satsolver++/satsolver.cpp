@@ -5,7 +5,6 @@
 #include <vector>
 #include <set>
 #include <sstream>
-#include <map>
 
 using namespace std;
 
@@ -13,6 +12,10 @@ bool doPrint = false;
 
 class Formel {
 public:
+    Formel() {
+
+    }
+
     Formel(std::string name) {
         readFile(name);
     }
@@ -22,8 +25,6 @@ public:
         while (knf_file.is_open() && !knf_file.eof()) {
             std::string line;
             std::getline(knf_file, line);
-            int variables;
-            int nr_clauses;
             if (line[0] == 'p') {
                 std::sscanf(line.c_str(), "p cnf %d %d", &variables, &nr_clauses);
                 clauses.reserve(nr_clauses);
@@ -102,32 +103,32 @@ public:
     }
 
     bool solvePureLit() {
-        std::map<int,int> found;
+        std::vector<int> found(variables+1, 0);
+        std::vector<int> signs(variables+1, 0);
+        std::set<int> pureliterals;
         maxv = 0;
-        std::map<int,bool> signs; // vorzeichen -1 => -, 1 = +, 0 => beides => nicht gültig
 
         for (unsigned int i = 0; i < clauses.size(); i++) {
             for (auto it = clauses[i].begin(); it != clauses[i].end(); ++it) {
                 int key = abs(*it);
-                bool isPos = *it > 0;
-                if (found.find(key) != found.end()) {
-                    found[key]++;
-                    if (signs.find(key) != signs.end() && signs[key] != isPos) {
-                        signs.erase(key);
-                    }
-                } else {
-                    found.emplace(key,1);
-                    signs.emplace(key,isPos);
+                int sign = (*it > 0)? 1 : -1;
+                found[key]++;
+                //std::cout << key << "/" << found.size() << std::endl;
+                if (found[key] == 1) {
+                    signs[key] = sign;
+                    pureliterals.insert(*it);
+                } else if (signs[key] != 0 && signs[key] != sign) {
+                    pureliterals.erase(signs[key]*key);
+                    signs[key] = 0;
                 }
-
                 if (maxv == 0 || found[key] > found[maxv]) {
                     maxv = key;
                 }
             }
         }
 
-        for (auto it = signs.begin(); it != signs.end(); ++it) {
-            int var = (it->second)? it->first : -it->first;
+        for (auto it = pureliterals.begin(); it != pureliterals.end(); ++it) {
+            int var = *it;
             solveForVar(var);
             solution.push_back(var);
             if (doPrint) {
@@ -142,21 +143,16 @@ public:
         return clauses.empty();
     }
 
-    Formel getCopy() {
-        return Formel(this->clauses, this->solution);
-    }
-
     void overwriteWith(Formel formel) {
         this->clauses = formel.clauses;
         this->solution = formel.solution;
-    }
-
-    Formel(std::vector<std::set<int>> clauses, std::vector<int> solution) {
-       this->clauses = clauses;
-       this->solution = solution;
+        this->variables = formel.variables;
+        this->nr_clauses = formel.nr_clauses;
     }
 
     int maxv = 0;
+    int variables;
+    int nr_clauses;
     std::vector<std::set<int>> clauses;
     std::vector<int> solution;
 };
@@ -187,7 +183,8 @@ bool solve(Formel& formel) {
             std::cout << "split try " << v << std::endl;
         }
 
-        Formel tempFormel = formel.getCopy();
+        Formel tempFormel;
+        tempFormel.overwriteWith(formel);
         tempFormel.solveForVar(v);
         if(solve(tempFormel)) {
             formel.overwriteWith(tempFormel);
@@ -198,14 +195,13 @@ bool solve(Formel& formel) {
         if (doPrint) {
             std::cout << "split try " << v << std::endl;
         }
-        tempFormel = formel.getCopy();
+        tempFormel.overwriteWith(formel);
         tempFormel.solveForVar(v);
         if(solve(tempFormel)) {
             formel.overwriteWith(tempFormel);
             return true;
         }
 
-        
         return false;
     }
 }
@@ -223,6 +219,6 @@ int main(int argc, char **argv) {
     } else {
         std::cout << "kein Input" << std::endl;
     }
-    
+
     return 0;
 }
