@@ -1,9 +1,10 @@
 from copy import deepcopy
 
 
-def print2(*args):
+def print2(solutions, *msg):
   return
-  print(*args)
+  #print(solutions, *msg)
+  #print(len(solutions), " ", *msg)
 
 # optimization: only one loop if possible
 def solveForVar(clauses, var):
@@ -20,10 +21,10 @@ def solveForVar(clauses, var):
 
 def solve(clauses, solutions):
   while True:
-    # print2("iteration", clauses)
+    # print2(solutions, "iteration", clauses)
     # done
     if len(clauses) == 0:
-      print2("Solved", solutions)
+      print2(solutions, "Solved")
       return True, solutions
 
     # fail / backtrack
