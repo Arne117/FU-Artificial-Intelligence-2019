@@ -6,8 +6,12 @@ from SATParser import parse
 from Solver import solve
 
 
-clauses, numVariables, numClauses = parse(sys.argv[1])
+clauses, numVariables, numClauses = parse(sys.argv[1], False)
 
 isSolved, solutions = solve(clauses, [])
 
-print("is solved", isSolved, "solutions", solutions)
+if isSolved:
+	print("% SZS status Satisfiable")
+	#print("is solved", isSolved, "solutions", solutions)
+else:
+	print("% SZS status Unsatisfiable")
