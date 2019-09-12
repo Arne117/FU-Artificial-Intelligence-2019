@@ -1,0 +1,41 @@
+python3 -m tptp competition competition-test/definition.py
+
+% SZS status Started for Sat1.cnf expecting Satisfiable with minisat -t 60s
+% SZS status Satisfiable for Sat1.cnf expecting Satisfiable with minisat -t 60s "which is" correct
+% SZS status Started for Sat2.cnf expecting Satisfiable with minisat -t 60s
+% SZS status Satisfiable for Sat2.cnf expecting Satisfiable with minisat -t 60s "which is" correct
+% SZS status Started for Sat3.cnf expecting Satisfiable with minisat -t 60s
+% SZS status Satisfiable for Sat3.cnf expecting Satisfiable with minisat -t 60s "which is" correct
+% SZS status Started for Sat4.cnf expecting Satisfiable with minisat -t 60s
+% SZS status Satisfiable for Sat4.cnf expecting Satisfiable with minisat -t 60s "which is" correct
+% SZS status Started for Sat5.cnf expecting Satisfiable with minisat -t 60s
+% SZS status Timeout for Sat5.cnf expecting Satisfiable with minisat -t 60s "which is" wrong
+% SZS status Started for Sat6.cnf expecting Satisfiable with minisat -t 60s
+% SZS status Satisfiable for Sat6.cnf expecting Satisfiable with minisat -t 60s "which is" correct
+% SZS status Started for Sat7.cnf expecting Satisfiable with minisat -t 60s
+% SZS status Timeout for Sat7.cnf expecting Satisfiable with minisat -t 60s "which is" wrong
+% SZS status Started for Sat8.cnf expecting Satisfiable with minisat -t 60s
+% SZS status Timeout for Sat8.cnf expecting Satisfiable with minisat -t 60s "which is" wrong
+% SZS status Started for Unsat1.cnf expecting Unsatisfiable with minisat -t 60s
+% SZS status Unsatisfiable for Unsat1.cnf expecting Unsatisfiable with minisat -t 60s "which is" correct
+% SZS status Started for Unsat2.cnf expecting Unsatisfiable with minisat -t 60s
+% SZS status Unsatisfiable for Unsat2.cnf expecting Unsatisfiable with minisat -t 60s "which is" correct
+% SZS status Started for Unsat3.cnf expecting Unsatisfiable with minisat -t 60s
+% SZS status Timeout for Unsat3.cnf expecting Unsatisfiable with minisat -t 60s "which is" wrong
+% SZS status Started for Unsat4.cnf expecting Unsatisfiable with minisat -t 60s
+% SZS status Timeout for Unsat4.cnf expecting Unsatisfiable with minisat -t 60s "which is" wrong
+% SZS status Started for Unsat5.cnf expecting Unsatisfiable with minisat -t 60s
+% SZS status Timeout for Unsat5.cnf expecting Unsatisfiable with minisat -t 60s "which is" wrong
+% SZS status Started for Unsat6.cnf expecting Unsatisfiable with minisat -t 60s
+% SZS status Timeout for Unsat6.cnf expecting Unsatisfiable with minisat -t 60s "which is" wrong
+% SZS status Started for Unsat7.cnf expecting Unsatisfiable with minisat -t 60s
+% SZS status Timeout for Unsat7.cnf expecting Unsatisfiable with minisat -t 60s "which is" wrong
+% SZS status Started for Unsat8.cnf expecting Unsatisfiable with minisat -t 60s
+% SZS status Timeout for Unsat8.cnf expecting Unsatisfiable with minisat -t 60s "which is" wrong
+
+
+auf Intel Pentium N3530 (Intel Atom chip)
+Sat5,7,8 sowie Unsat3,4,5,6,7,8 gibt Timeout, der Rest gelöst
+=> ist erstmal gut, Sat5 wird nicht korrekt gekillt? => fehler vom skript?
+=> optimieren u.a. Multithreading auf 4 Kernen
+
