@@ -40,3 +40,5 @@ Sat5,7,8 sowie Unsat3,4,5,6,7,8 gibt Timeout, der Rest gelöst
 => optimieren u.a. Multithreading auf 4 Kernen sowie split heuristisch besser wählen
 => der durschnitt laut wc ist 4 Worte pro Zeile => die Formeln sind kurz
   => schleifen die über alle klauseln gehen optimieren, da dass ein paar tausend sein könnne
+
+unsat3 / sat5 hat auch nach 30min kein ergebnis gefunden...
