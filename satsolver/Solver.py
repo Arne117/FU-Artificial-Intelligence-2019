@@ -1,6 +1,9 @@
 from copy import deepcopy
 
-false_solutions = []
+
+def print2(*args):
+  return
+  print(*args)
 
 # optimization: only one loop if possible
 def solveForVar(clauses, var):
@@ -15,54 +18,18 @@ def solveForVar(clauses, var):
       # remove unresolvable literals
       c.remove(-var)
 
-def isAlreadyKnownAsFalse(solutions):
-  for not_solution in false_solutions:
-    if not_solution.issubset(set(solutions)):
-      # auf dieser basis kann es keine lösung geben
-      return True
-  return False
-
-def addFalseSolution(solutions):
-  # erstmal wieder deaktiviert
-  return
-  solset = set(solutions)
-  combined = False
-  for v in solutions:
-    solset.remove(v)
-    solset.add(-v)
-    if solset in false_solutions:
-      # falls ein mit uns kombinierbare lösung exisitert
-      # diese löschen
-      false_solutions.remove(solset)
-      # und die kombinierte hinzufügen
-      solset.remove(-v)
-      addFalseSolution(solset)
-      combined=True
-    else:
-      # ursprüngliches set wiederherstellen
-      solset.remove(-v)
-    # ursprüngliches set wiederherstellen 
-    solset.add(v)
-  if (not combined) and (not (solset in false_solutions)):
-    false_solutions.append(solset)
-
 def solve(clauses, solutions):
-  if isAlreadyKnownAsFalse(solutions):
-    print(solutions, "tested as false before => fail & backtrack", len(false_solutions))
-    return False, None
-
   while True:
-    # print("iteration", clauses)
+    # print2("iteration", clauses)
     # done
     if len(clauses) == 0:
-      print("Solved", solutions)
+      print2("Solved", solutions)
       return True, solutions
 
     # fail / backtrack
     for c in clauses:
       if len(c) == 0:
-        print(solutions, "invalid branch")
-        addFalseSolution(solutions)
+        print2(solutions, "invalid branch")
         return False, None
         # return...
 
@@ -72,7 +39,7 @@ def solve(clauses, solutions):
       if len(c) == 1:
         goToNext = True
         val = c[0]
-        print(solutions,"Unit propagation", val)
+        print2(solutions,"Unit propagation", val)
         solutions.append(val)
         solveForVar(clauses, val)
         break
@@ -100,7 +67,7 @@ def solve(clauses, solutions):
 
     for num, isPositive in sign.items():
       val = int(num) * isPositive
-      print(solutions, "found pure Literal", val)
+      print2(solutions, "found pure Literal", val)
       solutions.append(val)
       solveForVar(clauses, val)
       goToNext = True
@@ -117,7 +84,7 @@ def solve(clauses, solutions):
           continue
         tested[key] = 1
         copyOne = deepcopy(clauses)
-        print(solutions,"split", v)
+        print2(solutions,"split", v)
         solveForVar(copyOne, v)
         isSolved, subSolutions = solve(copyOne, solutions+[v])
         if isSolved:
@@ -126,7 +93,7 @@ def solve(clauses, solutions):
         
         v = -v
         copyTwo = deepcopy(clauses)
-        print(solutions,"split", v)
+        print2(solutions,"split", v)
         solveForVar(copyTwo, v)
         isSolved, subSolutions = solve(copyTwo, solutions+[v])
         if isSolved:
@@ -137,11 +104,9 @@ def solve(clauses, solutions):
         # da diese auch irgentwann v oder -v setzen oder wenn sie ohne v/-v auskommen,
         # müssten sie auch mit v/-v funktionieren
         # => ein durchgang reicht!
-        print(solutions, "split v/-v didn't work => invalid branch")
-        addFalseSolution(solutions)
+        print2(solutions, "split v/-v didn't work => invalid branch")
         return False, None
 
     # alles probiert, nichts geht => fail
-    print(solutions, "no split worked => invalid branch")
-    addFalseSolution(solutions)
+    print2(solutions, "no split worked => invalid branch")
     return False, None
