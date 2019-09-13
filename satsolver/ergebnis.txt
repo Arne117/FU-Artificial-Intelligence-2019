@@ -42,3 +42,15 @@ Sat5,7,8 sowie Unsat3,4,5,6,7,8 gibt Timeout, der Rest gelöst
   => schleifen die über alle klauseln gehen optimieren, da dass ein paar tausend sein könnne
 
 unsat3 / sat5 hat auch nach 30min kein ergebnis gefunden...
+
+
+-----
+auf Intel Pentium N3530 (Intel Atom chip)
+c++ / python
+uf150-01.cnf - 16.4s / 30s
+uf175-01.cnf - 7m36s / 13m35s => 1,78x
+
+uuf125-01.cnf - 19s / 36.4s
+uuf150-01.cnf - 1m54s / 3m33s => 1,87x
+
+=> bei kleinen Problem Speedup ~2x, bei größeren immernoch ~1.8x

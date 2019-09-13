@@ -49,7 +49,7 @@ public:
 
     void print() {
         std::cout << "[";
-        for (unsigned int i = 0; i < clauses.size(); i++) {
+        for (unsigned int i = 0; i < clauses.size(); ++i) {
             std::cout << "[";
             for (auto it = clauses[i].begin(); it != clauses[i].end(); ++it) {
                 std::cout << *it;
@@ -76,7 +76,7 @@ public:
     }
 
     bool isInvalid() {
-        for (unsigned int i = 0; i < clauses.size(); i++) {
+        for (unsigned int i = 0; i < clauses.size(); ++i) {
             if(clauses[i].empty()) {
                 if (doPrint) {
                     std::cout << "invalid branch" << std::endl;
@@ -88,7 +88,7 @@ public:
     }
 
     bool solveUnitProp() {
-        for (unsigned int i = 0; i < clauses.size(); i++) {
+        for (unsigned int i = 0; i < clauses.size(); ++i) {
             if (clauses[i].size() == 1) {
                 int var = *clauses[i].begin();
                 solveForVar(var);
@@ -108,7 +108,7 @@ public:
         std::set<int> pureliterals;
         maxv = 0;
 
-        for (unsigned int i = 0; i < clauses.size(); i++) {
+        for (unsigned int i = 0; i < clauses.size(); ++i) {
             for (auto it = clauses[i].begin(); it != clauses[i].end(); ++it) {
                 int key = abs(*it);
                 int sign = (*it > 0)? 1 : -1;
