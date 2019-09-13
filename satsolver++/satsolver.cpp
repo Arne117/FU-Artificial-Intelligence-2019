@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -12,6 +11,8 @@
 using namespace std;
 
 bool doPrint = false;
+bool result_printed = false;
+std::mutex result_mutex;
 
 std::vector<std::future<bool>> pending_futures;
 std::mutex pending_futures_mutex;
@@ -163,6 +164,19 @@ public:
     std::vector<int> solution;
 };
 
+void printResult(bool result, Formel& formel) {
+    result_mutex.lock();
+    if (!result_printed) {
+        result_printed = true;
+        if (result) { 
+            std::cout << "% SZS status Satisfiable" << std::endl;
+        } else {
+            std::cout << "% SZS status Unsatisfiable" << std::endl;
+        }
+    }
+    result_mutex.unlock();
+}
+
 bool solve(Formel& formel, int depth) {
     while(true) {
         if (formel.empty()) {
@@ -203,12 +217,11 @@ bool solve(Formel& formel, int depth) {
             bool future1read = false;
             bool future2read = false;
             while (!(future1read && future2read)) {
-                
                 if (!future1read) {
                     if (std::future_status::ready == future1.wait_for(std::chrono::milliseconds(100))) {
                         future1read = true;
                         if (future1.get()) {
-                            formel.overwriteWith(tempFormel1);
+                            printResult(true, tempFormel1);
                             if (!future2read) {
                                 // schiebe future nach global,
                                 // da wir im destruktor von future auf abarbeitung warten
@@ -225,7 +238,7 @@ bool solve(Formel& formel, int depth) {
                     if (std::future_status::ready == future2.wait_for(std::chrono::milliseconds(100))) {
                         future2read = true;
                         if (future2.get()) {
-                            formel.overwriteWith(tempFormel2);
+                            printResult(true, tempFormel2);
                             if (!future1read) {
                                 // schiebe future nach global,
                                 // da wir im destruktor von future auf abarbeitung warten
@@ -246,7 +259,7 @@ bool solve(Formel& formel, int depth) {
             tempFormel.overwriteWith(formel);
             tempFormel.solveForVar(v);
             if (solve(tempFormel,depth-1)) {
-                formel.overwriteWith(tempFormel);
+                printResult(true, tempFormel);
                 return true;
             }
 
@@ -257,11 +270,10 @@ bool solve(Formel& formel, int depth) {
             tempFormel.overwriteWith(formel);
             tempFormel.solveForVar(v);
             if (solve(tempFormel,depth-1)) {
-                formel.overwriteWith(tempFormel);
+                printResult(true, tempFormel);
                 return true;
             }
         }
-
         return false;
     }
 }
@@ -271,16 +283,12 @@ int main(int argc, char **argv) {
     if (argc >= 2) {
         Formel formel = Formel(argv[1]);
         if (doPrint) formel.print();
-        if(solve(formel, 3)) { // 3 = 8Threads, 2 = 4, 1 = 2, 0 = 1...
-            std::cout << "% SZS status Satisfiable" << std::endl;
-        } else {
-            std::cout << "% SZS status Unsatisfiable" << std::endl;
-        }
+         // 3 = 8Threads, 2 = 4, 1 = 2, 0 = 1...
+        printResult(solve(formel, 3), formel);
     } else {
         std::cout << "kein Input" << std::endl;
     }
-    //exit(0);
-    //kill(getpid(), SIGTERM);
+    // prozess killen, da er sonst wegen der futures weiterläuft
     std::terminate();
     return 0;
 }
