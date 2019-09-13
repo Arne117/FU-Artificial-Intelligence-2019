@@ -7,6 +7,7 @@
 #include <future>
 #include <chrono>
 #include <mutex>
+#include <csignal>
 
 using namespace std;
 
@@ -289,6 +290,6 @@ int main(int argc, char **argv) {
         std::cout << "kein Input" << std::endl;
     }
     // prozess killen, da er sonst wegen der futures weiterläuft
-    std::terminate();
+    std::raise(SIGTERM);
     return 0;
 }
