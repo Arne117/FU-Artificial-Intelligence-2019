@@ -46,11 +46,12 @@ unsat3 / sat5 hat auch nach 30min kein ergebnis gefunden...
 
 -----
 auf Intel Pentium N3530 (Intel Atom chip)
-c++ / python
-uf150-01.cnf - 16.4s / 30s
-uf175-01.cnf - 7m36s / 13m35s => 1,78x
+c++ / python / c++mp 8threads / c++mp4threads
+uf150-01.cnf - 16.4s / 30s / 10.3s / 5.3s
+uf175-01.cnf - 7m36s / 13m35s / 36s / 1m25s
 
-uuf125-01.cnf - 19s / 36.4s
-uuf150-01.cnf - 1m54s / 3m33s => 1,87x
+uuf125-01.cnf - 19s / 36.4s / 5,9s / 8s
+uuf150-01.cnf - 1m54s / 3m33s / 34s / 49s
 
 => bei kleinen Problem Speedup ~2x, bei größeren immernoch ~1.8x
+=> mit multithreaden ist Faktor gesamt ~6-10x

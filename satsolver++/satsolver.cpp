@@ -5,10 +5,16 @@
 #include <vector>
 #include <set>
 #include <sstream>
+#include <future>
+#include <chrono>
+#include <mutex>
 
 using namespace std;
 
 bool doPrint = false;
+
+std::vector<std::future<bool>> pending_futures;
+std::mutex pending_futures_mutex;
 
 class Formel {
 public:
@@ -157,7 +163,7 @@ public:
     std::vector<int> solution;
 };
 
-bool solve(Formel& formel) {
+bool solve(Formel& formel, int depth) {
     while(true) {
         if (formel.empty()) {
             if (doPrint) {
@@ -179,27 +185,81 @@ bool solve(Formel& formel) {
         }
 
         int v = formel.maxv;
-        if (doPrint) {
-            std::cout << "split try " << v << std::endl;
-        }
+        if (depth > 0) {
+            Formel tempFormel1;
+            tempFormel1.overwriteWith(formel);
+            tempFormel1.solveForVar(v);
+            std::future<bool> future1( std::async(solve,std::ref(tempFormel1),depth-1));
 
-        Formel tempFormel;
-        tempFormel.overwriteWith(formel);
-        tempFormel.solveForVar(v);
-        if(solve(tempFormel)) {
-            formel.overwriteWith(tempFormel);
-            return true;
-        }
+            v = -v;
+            if (doPrint) {
+                std::cout << "split try " << v << std::endl;
+            }
+            Formel tempFormel2;
+            tempFormel2.overwriteWith(formel);
+            tempFormel2.solveForVar(v);
+            std::future<bool> future2(std::async(solve,std::ref(tempFormel2),depth-1));
 
-        v = -v;
-        if (doPrint) {
-            std::cout << "split try " << v << std::endl;
-        }
-        tempFormel.overwriteWith(formel);
-        tempFormel.solveForVar(v);
-        if(solve(tempFormel)) {
-            formel.overwriteWith(tempFormel);
-            return true;
+            bool future1read = false;
+            bool future2read = false;
+            while (!(future1read && future2read)) {
+                
+                if (!future1read) {
+                    if (std::future_status::ready == future1.wait_for(std::chrono::milliseconds(100))) {
+                        future1read = true;
+                        if (future1.get()) {
+                            formel.overwriteWith(tempFormel1);
+                            if (!future2read) {
+                                // schiebe future nach global,
+                                // da wir im destruktor von future auf abarbeitung warten
+                                pending_futures_mutex.lock();
+                                pending_futures.push_back(std::move(future2));
+                                pending_futures_mutex.unlock();
+                            }
+                            return true;
+                        }
+                    }
+                }
+                
+                if (!future2read) {
+                    if (std::future_status::ready == future2.wait_for(std::chrono::milliseconds(100))) {
+                        future2read = true;
+                        if (future2.get()) {
+                            formel.overwriteWith(tempFormel2);
+                            if (!future1read) {
+                                // schiebe future nach global,
+                                // da wir im destruktor von future auf abarbeitung warten
+                                pending_futures_mutex.lock();
+                                pending_futures.push_back(std::move(future1));
+                                pending_futures_mutex.unlock();
+                            }
+                            return true;
+                        }
+                    }
+                }
+            }
+        } else {
+            if (doPrint) {
+                std::cout << "split try " << v << std::endl;
+            }
+            Formel tempFormel;
+            tempFormel.overwriteWith(formel);
+            tempFormel.solveForVar(v);
+            if (solve(tempFormel,depth-1)) {
+                formel.overwriteWith(tempFormel);
+                return true;
+            }
+
+            v = -v;
+            if (doPrint) {
+                std::cout << "split try " << v << std::endl;
+            }
+            tempFormel.overwriteWith(formel);
+            tempFormel.solveForVar(v);
+            if (solve(tempFormel,depth-1)) {
+                formel.overwriteWith(tempFormel);
+                return true;
+            }
         }
 
         return false;
@@ -211,7 +271,7 @@ int main(int argc, char **argv) {
     if (argc >= 2) {
         Formel formel = Formel(argv[1]);
         if (doPrint) formel.print();
-        if(solve(formel)) {
+        if(solve(formel, 3)) { // 3 = 8Threads, 2 = 4, 1 = 2, 0 = 1...
             std::cout << "% SZS status Satisfiable" << std::endl;
         } else {
             std::cout << "% SZS status Unsatisfiable" << std::endl;
@@ -219,6 +279,8 @@ int main(int argc, char **argv) {
     } else {
         std::cout << "kein Input" << std::endl;
     }
-
+    //exit(0);
+    //kill(getpid(), SIGTERM);
+    std::terminate();
     return 0;
 }
