@@ -55,3 +55,5 @@ uuf150-01.cnf - 1m54s / 3m33s / 34s / 49s
 
 => bei kleinen Problem Speedup ~2x, bei größeren immernoch ~1.8x
 => mit multithreaden ist Faktor gesamt ~6-10x
+
+=> paper suchen, z.b. bei minisat abschauen
