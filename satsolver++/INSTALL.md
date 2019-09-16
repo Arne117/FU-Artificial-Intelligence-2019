@@ -12,7 +12,7 @@ clang++ --std=c++11 -Wall -march=native -o3 -pthread -o satsolver satsolver.cpp
 (oder clang++ durch g++ ersetzen)
 
 ## Ausführen
-executable ausführen und pfad als erstes argument
+executable ausführen und pfad/dateiname der cnf als erstes argument
 ```
-./satsolver test.cnf
+./satsolver ./test.cnf
 ```
