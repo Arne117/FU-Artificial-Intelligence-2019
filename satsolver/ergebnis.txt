@@ -1,59 +1,16 @@
 python3 -m tptp competition competition-test/definition.py
 
-% SZS status Started for Sat1.cnf expecting Satisfiable with minisat -t 60s
-% SZS status Satisfiable for Sat1.cnf expecting Satisfiable with minisat -t 60s "which is" correct
-% SZS status Started for Sat2.cnf expecting Satisfiable with minisat -t 60s
-% SZS status Satisfiable for Sat2.cnf expecting Satisfiable with minisat -t 60s "which is" correct
-% SZS status Started for Sat3.cnf expecting Satisfiable with minisat -t 60s
-% SZS status Satisfiable for Sat3.cnf expecting Satisfiable with minisat -t 60s "which is" correct
-% SZS status Started for Sat4.cnf expecting Satisfiable with minisat -t 60s
-% SZS status Satisfiable for Sat4.cnf expecting Satisfiable with minisat -t 60s "which is" correct
-% SZS status Started for Sat5.cnf expecting Satisfiable with minisat -t 60s
-% SZS status Timeout for Sat5.cnf expecting Satisfiable with minisat -t 60s "which is" wrong
-% SZS status Started for Sat6.cnf expecting Satisfiable with minisat -t 60s
-% SZS status Satisfiable for Sat6.cnf expecting Satisfiable with minisat -t 60s "which is" correct
-% SZS status Started for Sat7.cnf expecting Satisfiable with minisat -t 60s
-% SZS status Timeout for Sat7.cnf expecting Satisfiable with minisat -t 60s "which is" wrong
-% SZS status Started for Sat8.cnf expecting Satisfiable with minisat -t 60s
-% SZS status Timeout for Sat8.cnf expecting Satisfiable with minisat -t 60s "which is" wrong
-% SZS status Started for Unsat1.cnf expecting Unsatisfiable with minisat -t 60s
-% SZS status Unsatisfiable for Unsat1.cnf expecting Unsatisfiable with minisat -t 60s "which is" correct
-% SZS status Started for Unsat2.cnf expecting Unsatisfiable with minisat -t 60s
-% SZS status Unsatisfiable for Unsat2.cnf expecting Unsatisfiable with minisat -t 60s "which is" correct
-% SZS status Started for Unsat3.cnf expecting Unsatisfiable with minisat -t 60s
-% SZS status Timeout for Unsat3.cnf expecting Unsatisfiable with minisat -t 60s "which is" wrong
-% SZS status Started for Unsat4.cnf expecting Unsatisfiable with minisat -t 60s
-% SZS status Timeout for Unsat4.cnf expecting Unsatisfiable with minisat -t 60s "which is" wrong
-% SZS status Started for Unsat5.cnf expecting Unsatisfiable with minisat -t 60s
-% SZS status Timeout for Unsat5.cnf expecting Unsatisfiable with minisat -t 60s "which is" wrong
-% SZS status Started for Unsat6.cnf expecting Unsatisfiable with minisat -t 60s
-% SZS status Timeout for Unsat6.cnf expecting Unsatisfiable with minisat -t 60s "which is" wrong
-% SZS status Started for Unsat7.cnf expecting Unsatisfiable with minisat -t 60s
-% SZS status Timeout for Unsat7.cnf expecting Unsatisfiable with minisat -t 60s "which is" wrong
-% SZS status Started for Unsat8.cnf expecting Unsatisfiable with minisat -t 60s
-% SZS status Timeout for Unsat8.cnf expecting Unsatisfiable with minisat -t 60s "which is" wrong
-
+SAT1,2,3,4,6 und Unsat1,2 funktionieren, der rest gibt Timeout
 
 auf Intel Pentium N3530 (Intel Atom chip)
-Sat5,7,8 sowie Unsat3,4,5,6,7,8 gibt Timeout, der Rest gelöst
-=> ist erstmal gut, Sat5 wird nicht korrekt gekillt? => fehler vom skript?
-=> optimieren u.a. Multithreading auf 4 Kernen sowie split heuristisch besser wählen
-=> der durschnitt laut wc ist 4 Worte pro Zeile => die Formeln sind kurz
-  => schleifen die über alle klauseln gehen optimieren, da dass ein paar tausend sein könnne
+             python / c++ / c++ (8th) / c++(4th) / c++2(8th)
+uf150-01.cnf - 30s    / 16.4s / 10.3s / 5.3s  / 2.5s
+uf175-01.cnf - 13m35s / 7m36s / 36s   / 1m25s / 9s      => 90x
+uf200-01.cnf - ..     /  ..   / ..    / ..    / 1m40s
 
-unsat3 / sat5 hat auch nach 30min kein ergebnis gefunden...
+uuf125-01.cnf - 36.4s / 19s   / 5,9s  / 8s    / 1.6s
+uuf150-01.cnf - 3m33s / 1m54s / 34s   / 49s   / 8s      => 26x
+uuf175-01.cnf - ..    / ..    / ..    / ..    / 34s
+                     2x              5-10x    3-4x
 
-
------
-auf Intel Pentium N3530 (Intel Atom chip)
-c++ / python / c++mp 8threads / c++mp4threads
-uf150-01.cnf - 16.4s / 30s / 10.3s / 5.3s
-uf175-01.cnf - 7m36s / 13m35s / 36s / 1m25s
-
-uuf125-01.cnf - 19s / 36.4s / 5,9s / 8s
-uuf150-01.cnf - 1m54s / 3m33s / 34s / 49s
-
-=> bei kleinen Problem Speedup ~2x, bei größeren immernoch ~1.8x
-=> mit multithreaden ist Faktor gesamt ~6-10x
-
-=> paper suchen, z.b. bei minisat abschauen
+TODO: evtl. heuristiken

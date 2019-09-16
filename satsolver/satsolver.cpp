@@ -131,7 +131,6 @@ public:
         std::vector<int> signs(variables+1, 0);
         std::set<int> pureliterals;
         maxv = 0;
-
         for (unsigned int i = 0; i < values.size(); ++i) {
             int key = abs(values[i]);
             int sign = (values[i] > 0)? 1 : -1;
