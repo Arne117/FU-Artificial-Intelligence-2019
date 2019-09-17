@@ -60,25 +60,36 @@ public:
     void print() {
         if (values.size() == 0) {
             std::cout << "[]" << std::endl;
-            return;
+        } else {
+            std::cout << "cnf:[[";
+            unsigned int j = 1;
+            for (unsigned int i = 0; i < values.size(); ++i) {
+                std::cout << values[i];
+                if (i+1 != indizes[j]) {
+                    std::cout << ",";
+                } else if (i+1 != values.size()) {
+                    std::cout << "]," << std::endl << "[";
+                    j++;
+                }
+            }
+            std::cout << "]]" << std::endl;
         }
-        std::cout << "[[";
-        unsigned int j = 0;
-        for (unsigned int i = 0; i < values.size(); ++i) {
-            std::cout << values[i];
-            if (i+1 != indizes[j]) {
+        std::cout << "solution:[";
+        for (unsigned int i = 0; i < solution.size(); ++i) {
+            std::cout << solution[i];
+            if (i+1 != solution.size()) {
                 std::cout << ",";
-            } else if (i+1 != values.size()) {
-                std::cout << "]," << std::endl << "[";
             }
         }
-        std::cout << "]]" << std::endl;
+        std::cout << "]" << std::endl;
     }
 
     void solveForVar(int var) {
         solution.push_back(var);
-        unsigned j = indizes.size()-2;
+        int j = indizes.size()-2;
         for (int i = values.size()-1; i >= 0; --i) {
+            // i = aktuelle pos
+            // j = index an dem unsere clausel startet (j+1 => erstes element der nächsten Klausel)
             if (values[i] == var) {
                 values.erase (values.begin()+indizes[j],values.begin()+indizes[j+1]);
                 i = indizes[j];
@@ -94,7 +105,7 @@ public:
                     --indizes[k];
                 }
             }
-            if (i <= indizes[j]) {
+            while (i <= indizes[j] && j != 0) {
                 j--;
             }
         }
@@ -135,7 +146,6 @@ public:
             int key = abs(values[i]);
             int sign = (values[i] > 0)? 1 : -1;
             found[key]++;
-            //std::cout << key << "/" << found.size() << std::endl;
             if (found[key] == 1) {
                 signs[key] = sign;
                 pureliterals.insert(values[i]);
@@ -184,6 +194,7 @@ void printResult(bool result, Formel& formel) {
         result_printed = true;
         if (result) { 
             std::cout << "% SZS status Satisfiable" << std::endl;
+            //formel.print();
         } else {
             std::cout << "% SZS status Unsatisfiable" << std::endl;
         }

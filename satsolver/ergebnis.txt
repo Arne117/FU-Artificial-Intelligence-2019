@@ -11,6 +11,9 @@ uf200-01.cnf - ..     /  ..   / ..    / ..    / 1m40s
 uuf125-01.cnf - 36.4s / 19s   / 5,9s  / 8s    / 1.6s
 uuf150-01.cnf - 3m33s / 1m54s / 34s   / 49s   / 8s      => 26x
 uuf175-01.cnf - ..    / ..    / ..    / ..    / 34s
+uuf175-03.cnf - ..    / ..    / ..    / ..    / 53s
+uuf175-04.cnf - ..    / ..    / ..    / ..    / 43s
                      2x              5-10x    3-4x
 
+uuf175-01/03/04 abgegeben
 TODO: evtl. heuristiken
