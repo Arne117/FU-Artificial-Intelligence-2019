@@ -170,7 +170,7 @@ public:
     }
 
     bool empty() {
-        return values.empty();
+        return values.empty() && indizes.size() == 1;
     }
 
     void overwriteWith(Formel formel) {
